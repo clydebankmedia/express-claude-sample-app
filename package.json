@@ -1,0 +1,13 @@
+{
+  "name": "express-claude-sample-app",
+  "version": "1.0.0",
+  "description": "A hands-on Express project for connecting a Node.js server to the Claude AI API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file=.env server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.117.1",
+    "express": "^5.2.1"
+  }
+}
