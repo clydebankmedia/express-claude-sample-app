@@ -1,8 +1,10 @@
-# Claude Sample App (Express + Claude API)
+# Claude Sample App (Express + Claude API) — Completed
 
 An Express server that talks to the Claude AI API, built one route at a time so you can see exactly how an app sends a prompt and gets an answer back.
 
-This is a backend-only project. There is no frontend to build — you'll test every route with Thunder Client in VS Code.
+**This is the `completed` branch.** All four routes are implemented. If you want to build them yourself, switch to `main` and follow the TODO comments there.
+
+This is a backend-only project. There is no frontend — you'll test every route with Thunder Client in VS Code.
 
 ## What You'll Learn
 
@@ -65,21 +67,26 @@ The `--env-file` flag is built into Node. It loads your `.env` file for you — 
 └── README.md      You are here
 ```
 
-## What You'll Build
+## What's Built
 
-The setup is done — Express, the JSON middleware, the Claude client, the welcome route at `/`, and `app.listen` are all in place. Your job is to write the four routes underneath.
-
-Each spot is marked with a `TODO` comment telling you exactly what to do, what the request body looks like, and what to send back.
+Every route in `server.js` is written and working. Each one still carries the `TODO` comment from the starter branch, marked `(DONE)`, so you can read the instructions and the solution side by side.
 
 ## TODOs
 
-1. **GET /api/hello** — a warm-up route with no Claude call. Return a JSON object with a message like `"Hello from the API!"` so you can confirm your route works before adding AI to the mix.
+1. **GET /api/hello** — a warm-up route with no Claude call. Returns `{ "message": "Hello from the API!" }` so you can confirm a route works before adding AI to the mix.
 
-2. **POST /api/ask** — your first Claude call. Pull `prompt` out of `req.body`, pass it to `client.messages.create()` with the model `claude-sonnet-4-20250514` and `max_tokens: 1024`, then send Claude's text back as JSON.
+2. **POST /api/ask** — the first Claude call. Pulls `prompt` out of `req.body`, passes it to `client.messages.create()` with the model `claude-sonnet-4-20250514` and `max_tokens: 1024`, and sends Claude's text back as JSON.
 
-3. **POST /api/cats** — same idea, plus a personality. Pull `question` out of `req.body` and add a system prompt: `"You are a cat expert. Answer everything about cats in 2-3 sentences."` Notice how the system prompt changes the answer without changing the question.
+3. **POST /api/cats** — same idea, plus a personality. Pulls `question` out of `req.body` and adds the system prompt `"You are a cat expert. Answer everything about cats in 2-3 sentences."` Notice how the system prompt changes the answer without changing the question.
 
-4. **POST /api/summarize** — a practical use case. Pull `text` out of `req.body`, send it to Claude with the system prompt `"Summarize the following text in 2-3 bullet points."`, and return the summary as JSON.
+4. **POST /api/summarize** — a practical use case. Pulls `text` out of `req.body`, sends it to Claude with the system prompt `"Summarize the following text in 2-3 bullet points."`, and returns the summary as JSON.
+
+Each Claude route also checks that the request body actually has a value and wraps the API call in `try`/`catch`, so a missing field returns a `400` and a failed API call returns a `500` instead of crashing the server.
+
+## Branches
+
+- `main` — the starter project with TODOs to complete
+- `completed` — the finished app with all four routes implemented (you are here)
 
 ## Testing Your Routes
 

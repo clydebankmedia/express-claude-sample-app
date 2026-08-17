@@ -1,5 +1,5 @@
 // Cat Chat API — Express + Claude
-// The server setup is done for you. Your job is to fill in the TODO routes below.
+// COMPLETED VERSION — all four routes are implemented.
 
 const express = require("express");
 const Anthropic = require("@anthropic-ai/sdk");
@@ -21,77 +21,102 @@ app.get("/", (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// TODO 1: Create a GET route at /api/hello
-// This route should:
-// - Respond with a JSON object containing a message
-// - Example: { "message": "Hello from the API!" }
-//
-// This one does NOT call Claude. It's just to confirm you can add a route.
+// TODO 1 (DONE): A basic GET route at /api/hello
+// No Claude call here — just proof that the route works.
 //
 // Test with Thunder Client:
 // GET http://localhost:3000/api/hello
-//
-// Expected response:
-// { "message": "Hello from the API!" }
 // ---------------------------------------------------------------------------
+app.get("/api/hello", (req, res) => {
+  res.json({ message: "Hello from the API!" });
+});
 
 // ---------------------------------------------------------------------------
-// TODO 2: Create a POST route at /api/ask
-// This route should:
-// - Get the "prompt" from req.body
-// - Send it to Claude using client.messages.create()
-//     model: "claude-sonnet-4-20250514"
-//     max_tokens: 1024
-//     messages: [{ role: "user", content: prompt }]
-// - Return the response text as JSON
-//   (the text lives at response.content[0].text)
-//
-// Remember: client.messages.create() returns a promise, so make your route
-// handler async and await the result.
+// TODO 2 (DONE): A POST route at /api/ask that sends a prompt to Claude
 //
 // Test with Thunder Client:
 // POST http://localhost:3000/api/ask
 // Body: { "prompt": "Why do cats purr?" }
-//
-// Expected response:
-// { "answer": "Cats purr for several reasons..." }
 // ---------------------------------------------------------------------------
+app.post("/api/ask", async (req, res) => {
+  const { prompt } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Please send a 'prompt' in the request body." });
+  }
+
+  try {
+    const response = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1024,
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    res.json({ answer: response.content[0].text });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong talking to Claude." });
+  }
+});
 
 // ---------------------------------------------------------------------------
-// TODO 3: Create a POST route at /api/cats
-// This route should:
-// - Get the "question" from req.body
-// - Add a system prompt so Claude answers like a cat expert:
-//     system: "You are a cat expert. Answer everything about cats in 2-3 sentences."
-// - Call Claude with the system prompt and the user's question
-// - Return the response text as JSON
-//
-// The system option goes at the top level of client.messages.create(),
-// right alongside model, max_tokens, and messages.
+// TODO 3 (DONE): A POST route at /api/cats with a cat expert system prompt
+// The system prompt gives Claude a personality and a length limit.
 //
 // Test with Thunder Client:
 // POST http://localhost:3000/api/cats
 // Body: { "question": "Why do cats knead blankets?" }
-//
-// Expected response:
-// { "answer": "Kneading is a leftover kitten behavior..." }
 // ---------------------------------------------------------------------------
+app.post("/api/cats", async (req, res) => {
+  const { question } = req.body;
+
+  if (!question) {
+    return res.status(400).json({ error: "Please send a 'question' in the request body." });
+  }
+
+  try {
+    const response = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1024,
+      system: "You are a cat expert. Answer everything about cats in 2-3 sentences.",
+      messages: [{ role: "user", content: question }],
+    });
+
+    res.json({ answer: response.content[0].text });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong talking to Claude." });
+  }
+});
 
 // ---------------------------------------------------------------------------
-// TODO 4: Create a POST route at /api/summarize
-// This route should:
-// - Get the "text" from req.body
-// - Send it to Claude with a system prompt:
-//     system: "Summarize the following text in 2-3 bullet points."
-// - Return the summary as JSON
+// TODO 4 (DONE): A POST route at /api/summarize that summarizes text
 //
 // Test with Thunder Client:
 // POST http://localhost:3000/api/summarize
 // Body: { "text": "Paste a few paragraphs of an article here..." }
-//
-// Expected response:
-// { "summary": "- First point\n- Second point\n- Third point" }
 // ---------------------------------------------------------------------------
+app.post("/api/summarize", async (req, res) => {
+  const { text } = req.body;
+
+  if (!text) {
+    return res.status(400).json({ error: "Please send 'text' in the request body." });
+  }
+
+  try {
+    const response = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1024,
+      system: "Summarize the following text in 2-3 bullet points.",
+      messages: [{ role: "user", content: text }],
+    });
+
+    res.json({ summary: response.content[0].text });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong talking to Claude." });
+  }
+});
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
