@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 // This route should:
 // - Get the "prompt" from req.body
 // - Send it to Claude using client.messages.create()
-//     model: "claude-sonnet-4-20250514"
+//     model: "claude-sonnet-5"
 //     max_tokens: 1024
 //     messages: [{ role: "user", content: prompt }]
 // - Return the response text as JSON

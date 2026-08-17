@@ -75,7 +75,7 @@ Each spot is marked with a `TODO` comment telling you exactly what to do, what t
 
 1. **GET /api/hello** — a warm-up route with no Claude call. Return a JSON object with a message like `"Hello from the API!"` so you can confirm your route works before adding AI to the mix.
 
-2. **POST /api/ask** — your first Claude call. Pull `prompt` out of `req.body`, pass it to `client.messages.create()` with the model `claude-sonnet-4-20250514` and `max_tokens: 1024`, then send Claude's text back as JSON.
+2. **POST /api/ask** — your first Claude call. Pull `prompt` out of `req.body`, pass it to `client.messages.create()` with the model `claude-sonnet-5` and `max_tokens: 1024`, then send Claude's text back as JSON.
 
 3. **POST /api/cats** — same idea, plus a personality. Pull `question` out of `req.body` and add a system prompt: `"You are a cat expert. Answer everything about cats in 2-3 sentences."` Notice how the system prompt changes the answer without changing the question.
 
@@ -133,6 +133,7 @@ Content-Type: application/json
 - **401 authentication error** — double-check the key in your `.env` file for typos or extra spaces
 - **`Cannot POST /api/ask`** — the route isn't defined yet, or the server needs a restart to pick up your changes
 - **Empty request body** — make sure `app.use(express.json())` is above your routes and that Thunder Client is sending JSON
+- **`not_found_error` about the model** — the model ID is wrong or has been retired. Check the [current model list](https://platform.claude.com/docs/en/about-claude/models/overview) and update the `model` value in `server.js`
 
 ## QuickStart Guides Academy
 
