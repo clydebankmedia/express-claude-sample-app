@@ -47,7 +47,7 @@ app.post("/api/ask", async (req, res) => {
 
   try {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-5",
       max_tokens: 1024,
       messages: [{ role: "user", content: prompt }],
     });
@@ -76,7 +76,7 @@ app.post("/api/cats", async (req, res) => {
 
   try {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-5",
       max_tokens: 1024,
       system: "You are a cat expert. Answer everything about cats in 2-3 sentences.",
       messages: [{ role: "user", content: question }],
@@ -105,7 +105,7 @@ app.post("/api/summarize", async (req, res) => {
 
   try {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-5",
       max_tokens: 1024,
       system: "Summarize the following text in 2-3 bullet points.",
       messages: [{ role: "user", content: text }],

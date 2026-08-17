@@ -75,7 +75,7 @@ Every route in `server.js` is written and working. Each one still carries the `T
 
 1. **GET /api/hello** — a warm-up route with no Claude call. Returns `{ "message": "Hello from the API!" }` so you can confirm a route works before adding AI to the mix.
 
-2. **POST /api/ask** — the first Claude call. Pulls `prompt` out of `req.body`, passes it to `client.messages.create()` with the model `claude-sonnet-4-20250514` and `max_tokens: 1024`, and sends Claude's text back as JSON.
+2. **POST /api/ask** — the first Claude call. Pulls `prompt` out of `req.body`, passes it to `client.messages.create()` with the model `claude-sonnet-5` and `max_tokens: 1024`, and sends Claude's text back as JSON.
 
 3. **POST /api/cats** — same idea, plus a personality. Pulls `question` out of `req.body` and adds the system prompt `"You are a cat expert. Answer everything about cats in 2-3 sentences."` Notice how the system prompt changes the answer without changing the question.
 
